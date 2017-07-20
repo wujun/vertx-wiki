@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="vertx-codegen-3.4.2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/io/vertx/vertx-codegen/3.4.2/vertx-codegen-3.4.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
