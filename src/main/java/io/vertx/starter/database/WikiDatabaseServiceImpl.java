@@ -12,6 +12,7 @@ import io.vertx.ext.sql.ResultSet;
 import io.vertx.ext.sql.SQLConnection;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -116,6 +117,37 @@ public class WikiDatabaseServiceImpl implements WikiDatabaseService {
   }
 
   @Override
+  public WikiDatabaseService fetchPageById(int id, Handler<AsyncResult<JsonObject>> resultHandler) {
+    dbClient.getConnection(car -> {
+      if (car.succeeded()) {
+        SQLConnection connection = car.result();
+        connection.queryWithParams(sqlQueries.get(SqlQuery.GET_PAGE_BY_ID), new JsonArray().add(id), res -> {
+          if (res.succeeded()) {
+            if (res.result().getNumRows() > 0) {
+              JsonObject result = res.result().getRows().get(0);
+              resultHandler.handle(Future.succeededFuture(new JsonObject()
+                .put("found", true)
+                .put("id", result.getInteger("ID"))
+                .put("name", result.getString("NAME"))
+                .put("content", result.getString("CONTENT"))));
+            } else {
+              resultHandler.handle(Future.succeededFuture(
+                new JsonObject().put("found", false)));
+            }
+          } else {
+            LOGGER.error("Database query error", res.cause());
+            resultHandler.handle(Future.failedFuture(res.cause()));
+          }
+        });
+      } else {
+        LOGGER.error("Database query error", car.cause());
+        resultHandler.handle(Future.failedFuture(car.cause()));
+      }
+    });
+    return this;
+  }
+
+  @Override
   public WikiDatabaseService createPage(String title, String markdown, Handler<AsyncResult<Void>> resultHandler) {
     dbClient.getConnection(car -> {
       if (car.succeeded()) {
@@ -179,6 +211,30 @@ public class WikiDatabaseServiceImpl implements WikiDatabaseService {
           else {
             LOGGER.error("Database query error", res.cause());
             resultHandler.handle(Future.failedFuture(res.cause()));
+          }
+        });
+      }
+      else {
+        LOGGER.error("Database query error", car.cause());
+        resultHandler.handle(Future.failedFuture(car.cause()));
+      }
+    });
+    return this;
+  }
+
+  @Override
+  public WikiDatabaseService fetchAllPagesData(Handler<AsyncResult<List<JsonObject>>> resultHandler) {
+    dbClient.getConnection(car -> {
+      if (car.succeeded()) {
+        SQLConnection connection = car.result();
+
+        connection.query(sqlQueries.get(SqlQuery.ALL_PAGES_DATA), queryResult -> {
+          if (queryResult.succeeded()) {
+            resultHandler.handle(Future.succeededFuture(queryResult.result().getRows()));
+          }
+          else {
+            LOGGER.error("Database query error", queryResult.cause());
+            resultHandler.handle(Future.failedFuture(queryResult.cause()));
           }
         });
       }
