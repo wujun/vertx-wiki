@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="vertx-auth-jwt-3.4.2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/io/vertx/vertx-auth-jwt/3.4.2/vertx-auth-jwt-3.4.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

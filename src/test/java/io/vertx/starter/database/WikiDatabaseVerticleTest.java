@@ -38,16 +38,6 @@ public class WikiDatabaseVerticleTest {
     vertx.close(context.asyncAssertSuccess());
   }
 
-  @Test /*(timeout=5000)*/
-  public void async_behavior(TestContext context) {
-    Vertx vertx = Vertx.vertx();
-    context.assertEquals("foo", "foo");
-    Async a1 = context.async();
-    Async a2 = context.async(3);
-    vertx.setTimer(100, n -> a1.complete());
-    vertx.setPeriodic(100, n -> a2.countDown());
-  }
-
   @Test
   public void crud_operations(TestContext context) {
     Async async = context.async();
@@ -78,6 +68,33 @@ public class WikiDatabaseVerticleTest {
         }));
       }));
     }));
+    async.awaitSuccess(5000);
+  }
+
+  @Test
+  public void test_fetchAllPagesData(TestContext context) {
+    Async async = context.async();
+
+    service.createPage("A", "abc", context.asyncAssertSuccess(p1 -> {
+      service.createPage("B", "123", context.asyncAssertSuccess(p2 -> {
+        service.fetchAllPagesData(context.asyncAssertSuccess(data -> {
+
+          context.assertEquals(2, data.size());
+
+          JsonObject a = data.get(0);
+          context.assertEquals("A", a.getString("NAME"));
+          context.assertEquals("abc", a.getString("CONTENT"));
+
+          JsonObject b = data.get(1);
+          context.assertEquals("B", b.getString("NAME"));
+          context.assertEquals("123", b.getString("CONTENT"));
+
+          async.complete();
+
+        }));
+      }));
+    }));
+
     async.awaitSuccess(5000);
   }
 }
