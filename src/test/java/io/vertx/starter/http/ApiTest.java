@@ -39,7 +39,6 @@ import org.junit.runner.RunWith;
 /**
  * @author <a href="https://julien.ponge.org/">Julien Ponge</a>
  */
-// tag::preamble[]
 @RunWith(VertxUnitRunner.class)
 public class ApiTest {
 
