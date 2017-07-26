@@ -10,6 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import io.vertx.starter.database.rxjava.WikiDatabaseService;
 
 /**
  * Created by wujun on 2017/7/22.
@@ -23,14 +24,13 @@ public class WikiDatabaseVerticleTest {
   @Before
   public void prepare(TestContext context) throws InterruptedException {
     vertx = Vertx.vertx();
-
     JsonObject conf = new JsonObject()
       .put(WikiDatabaseVerticle.CONFIG_WIKIDB_JDBC_URL, "jdbc:hsqldb:mem:testdb;shutdown=true")
       .put(WikiDatabaseVerticle.CONFIG_WIKIDB_JDBC_MAX_POOL_SIZE, 4);
-
     vertx.deployVerticle(new WikiDatabaseVerticle(), new DeploymentOptions().setConfig(conf),
       context.asyncAssertSuccess(id ->
-        service = WikiDatabaseService.createProxy(vertx, WikiDatabaseVerticle.CONFIG_WIKIDB_QUEUE)));
+        service = io.vertx.starter.database.WikiDatabaseService.createProxy(vertx,
+          WikiDatabaseVerticle.CONFIG_WIKIDB_QUEUE)));
   }
 
   @After

@@ -1,7 +1,9 @@
 package io.vertx.starter.database;
 
 import io.vertx.codegen.annotations.Fluent;
+import io.vertx.codegen.annotations.GenIgnore;
 import io.vertx.codegen.annotations.ProxyGen;
+import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
@@ -17,7 +19,18 @@ import java.util.List;
  */
 
 @ProxyGen
+@VertxGen
 public interface WikiDatabaseService {
+
+  @GenIgnore
+  static WikiDatabaseService create(JDBCClient dbClient, HashMap<SqlQuery, String> sqlQueries, Handler<AsyncResult<WikiDatabaseService>> readyHandler) {
+    return new WikiDatabaseServiceImpl(dbClient, sqlQueries, readyHandler);
+  }
+
+  @GenIgnore
+  static io.vertx.starter.database.rxjava.WikiDatabaseService createProxy(Vertx vertx, String address) {
+    return new io.vertx.starter.database.rxjava.WikiDatabaseService(new WikiDatabaseServiceVertxEBProxy(vertx, address));
+  }
 
   @Fluent
   WikiDatabaseService fetchAllPages(Handler<AsyncResult<JsonArray>> resultHandler);
@@ -39,12 +52,4 @@ public interface WikiDatabaseService {
 
   @Fluent
   WikiDatabaseService fetchAllPagesData(Handler<AsyncResult<List<JsonObject>>> resultHandler);
-
-  static WikiDatabaseService create(JDBCClient dbClient, HashMap<SqlQuery, String> sqlQueries, Handler<AsyncResult<WikiDatabaseService>> readyHandler) {
-    return new WikiDatabaseServiceImpl(dbClient, sqlQueries, readyHandler);
-  }
-
-  static WikiDatabaseService createProxy(Vertx vertx, String address) {
-    return new WikiDatabaseServiceVertxEBProxy(vertx, address);
-  }
 }

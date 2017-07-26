@@ -21,7 +21,6 @@ public class WikiDatabaseVerticle extends AbstractVerticle {
   public static final String CONFIG_WIKIDB_JDBC_DRIVER_CLASS = "wikidb.jdbc.driver_class";
   public static final String CONFIG_WIKIDB_JDBC_MAX_POOL_SIZE = "wikidb.jdbc.max_pool_size";
   public static final String CONFIG_WIKIDB_SQL_QUERIES_RESOURCE_FILE = "wikidb.sqlqueries.resource.file";
-
   public static final String CONFIG_WIKIDB_QUEUE = "wikidb.queue";
 
 
@@ -47,6 +46,7 @@ public class WikiDatabaseVerticle extends AbstractVerticle {
     Properties queriesProps = new Properties();
     queriesProps.load(queriesInputStream);
     queriesInputStream.close();
+
     HashMap<SqlQuery, String> sqlQueries = new HashMap<>();
     sqlQueries.put(SqlQuery.CREATE_PAGES_TABLE, queriesProps.getProperty("create-pages-table"));
     sqlQueries.put(SqlQuery.ALL_PAGES, queriesProps.getProperty("all-pages"));
