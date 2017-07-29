@@ -24,8 +24,6 @@ public class WikiDatabaseVerticle extends AbstractVerticle {
   public static final String CONFIG_WIKIDB_QUEUE = "wikidb.queue";
 
 
-  private final HashMap<SqlQuery, String> sqlQueries = new HashMap<>();
-
   /**
    * Load SQL queris from file
    *
