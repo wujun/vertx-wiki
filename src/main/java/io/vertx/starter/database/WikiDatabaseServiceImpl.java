@@ -27,7 +27,7 @@ public class WikiDatabaseServiceImpl implements WikiDatabaseService {
   private final JDBCClient dbClient;
 
   /**
-   *
+   * Init class instance
    *
    * @param dbClient
    * @param sqlQueries
@@ -45,7 +45,7 @@ public class WikiDatabaseServiceImpl implements WikiDatabaseService {
   }
 
   /**
-   *
+   * Get connection with db
    *
    * @return
    */
@@ -56,6 +56,12 @@ public class WikiDatabaseServiceImpl implements WikiDatabaseService {
     });
   }
 
+  /**
+   * Fetch all pages from db
+   *
+   * @param resultHandler
+   * @return
+   */
   @Override
   public WikiDatabaseService fetchAllPages(Handler<AsyncResult<JsonArray>> resultHandler) {
     getConnection()
@@ -71,6 +77,13 @@ public class WikiDatabaseServiceImpl implements WikiDatabaseService {
     return this;
   }
 
+  /**
+   * Fetch a page specified by name
+   *
+   * @param name
+   * @param resultHandler
+   * @return
+   */
   @Override
   public WikiDatabaseService fetchPage(String name, Handler<AsyncResult<JsonObject>> resultHandler) {
     getConnection()
@@ -90,6 +103,13 @@ public class WikiDatabaseServiceImpl implements WikiDatabaseService {
     return this;
   }
 
+  /**
+   * Fetch a page by id
+   *
+   * @param id
+   * @param resultHandler
+   * @return
+   */
   @Override
   public WikiDatabaseService fetchPageById(int id, Handler<AsyncResult<JsonObject>> resultHandler) {
     Single<SQLConnection> connection = getConnection();
@@ -112,6 +132,14 @@ public class WikiDatabaseServiceImpl implements WikiDatabaseService {
     return this;
   }
 
+  /**
+   * Create a page with title and markdown
+   *
+   * @param title
+   * @param markdown
+   * @param resultHandler
+   * @return
+   */
   @Override
   public WikiDatabaseService createPage(String title, String markdown, Handler<AsyncResult<Void>> resultHandler) {
     getConnection()
@@ -121,6 +149,14 @@ public class WikiDatabaseServiceImpl implements WikiDatabaseService {
     return this;
   }
 
+  /**
+   * Save a page by id
+   *
+   * @param id
+   * @param markdown
+   * @param resultHandler
+   * @return
+   */
   @Override
   public WikiDatabaseService savePage(int id, String markdown, Handler<AsyncResult<Void>> resultHandler) {
     getConnection()
@@ -130,6 +166,13 @@ public class WikiDatabaseServiceImpl implements WikiDatabaseService {
     return this;
   }
 
+  /**
+   * Delete a page by id
+   *
+   * @param id
+   * @param resultHandler
+   * @return
+   */
   @Override
   public WikiDatabaseService deletePage(int id, Handler<AsyncResult<Void>> resultHandler) {
     getConnection()
@@ -142,6 +185,12 @@ public class WikiDatabaseServiceImpl implements WikiDatabaseService {
     return this;
   }
 
+  /**
+   * Fetch all page data
+   *
+   * @param resultHandler
+   * @return
+   */
   @Override
   public WikiDatabaseService fetchAllPagesData(Handler<AsyncResult<List<JsonObject>>> resultHandler) {
     getConnection()

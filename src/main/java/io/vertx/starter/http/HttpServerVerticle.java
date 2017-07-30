@@ -2,35 +2,20 @@ package io.vertx.starter.http;
 
 import com.github.rjeschke.txtmark.Processor;
 import io.vertx.core.Future;
-import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.ext.web.handler.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import io.vertx.core.net.JksOptions;
-import io.vertx.ext.auth.jwt.JWTOptions;
-import io.vertx.ext.auth.shiro.ShiroAuthOptions;
-import io.vertx.ext.auth.shiro.ShiroAuthRealmType;
-import io.vertx.ext.web.client.WebClientOptions;
 import io.vertx.starter.database.rxjava.WikiDatabaseService;
 import io.vertx.rxjava.core.AbstractVerticle;
 import io.vertx.rxjava.core.http.HttpServer;
-import io.vertx.rxjava.ext.auth.AuthProvider;
-import io.vertx.rxjava.ext.auth.User;
-import io.vertx.rxjava.ext.auth.jwt.JWTAuth;
-import io.vertx.rxjava.ext.auth.shiro.ShiroAuth;
 import io.vertx.rxjava.ext.web.Router;
 import io.vertx.rxjava.ext.web.RoutingContext;
-import io.vertx.rxjava.ext.web.client.WebClient;
-import io.vertx.rxjava.ext.web.codec.BodyCodec;
 import io.vertx.rxjava.ext.web.sstore.LocalSessionStore;
-import io.vertx.rxjava.ext.web.templ.FreeMarkerTemplateEngine;
 import rx.Observable;
-import rx.Single;
 
 import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Created by wujun on 2017/7/16.
@@ -81,8 +66,7 @@ public class HttpServerVerticle extends AbstractVerticle {
     router.post("/api/pages").handler(this::apiCreatePage);
     router.put().handler(BodyHandler.create());
     router.put("/api/pages/:id").handler(this::apiUpdatePage);
-    router.delete("/api" +
-      "/pages/:id").handler(this::apiDeletePage);
+    router.delete("/api" + "/pages/:id").handler(this::apiDeletePage);
 
     int portNumber = config().getInteger(CONFIG_HTTP_SERVER_PORT, 8080);
     server
